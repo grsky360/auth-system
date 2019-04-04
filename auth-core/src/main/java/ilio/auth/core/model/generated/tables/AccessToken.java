@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessToken extends TableImpl<AccessTokenRecord> {
 
-    private static final long serialVersionUID = -30275375;
+    private static final long serialVersionUID = -1451605687;
 
     /**
      * The reference instance of <code>auth_sys.access_token</code>
@@ -133,7 +133,7 @@ public class AccessToken extends TableImpl<AccessTokenRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.ACCESS_TOKEN_PRIMARY, Indexes.ACCESS_TOKEN_TOKEN, Indexes.ACCESS_TOKEN_TOKEN_2, Indexes.ACCESS_TOKEN_USER_ID);
+        return Arrays.<Index>asList(Indexes.ACCESS_TOKEN_PRIMARY, Indexes.ACCESS_TOKEN_TOKEN, Indexes.ACCESS_TOKEN_USER_ID);
     }
 
     /**
@@ -158,18 +158,6 @@ public class AccessToken extends TableImpl<AccessTokenRecord> {
     @Override
     public List<UniqueKey<AccessTokenRecord>> getKeys() {
         return Arrays.<UniqueKey<AccessTokenRecord>>asList(Keys.KEY_ACCESS_TOKEN_PRIMARY, Keys.KEY_ACCESS_TOKEN_USER_ID, Keys.KEY_ACCESS_TOKEN_TOKEN);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ForeignKey<AccessTokenRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<AccessTokenRecord, ?>>asList(Keys.ACCESS_TOKEN_IBFK_1);
-    }
-
-    public User user() {
-        return new User(this, Keys.ACCESS_TOKEN_IBFK_1);
     }
 
     /**

@@ -32,7 +32,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AuthSys extends SchemaImpl {
 
-    private static final long serialVersionUID = -2126467431;
+    private static final long serialVersionUID = -875670856;
 
     /**
      * The reference instance of <code>auth_sys</code>

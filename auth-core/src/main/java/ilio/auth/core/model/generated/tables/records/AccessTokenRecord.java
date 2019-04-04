@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokenRecord extends UpdatableRecordImpl<AccessTokenRecord> implements Record6<Long, Long, String, LocalDateTime, LocalDateTime, LocalDateTime> {
 
-    private static final long serialVersionUID = 760633338;
+    private static final long serialVersionUID = -1876243848;
 
     /**
      * Setter for <code>auth_sys.access_token.id</code>.

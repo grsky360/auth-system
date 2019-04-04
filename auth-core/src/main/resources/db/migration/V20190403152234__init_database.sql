@@ -28,7 +28,6 @@ create table access_token
     primary key (`id`),
     unique key (`user_id`),
     unique key (`token`),
-    index (`token`),
-    foreign key (`id`) references user (`user_id`)
+    index (`token`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = UTF8MB4;

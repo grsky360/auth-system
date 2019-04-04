@@ -13,7 +13,6 @@ import ilio.auth.core.model.generated.tables.records.UserRecord;
 
 import javax.annotation.Generated;
 
-import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;
@@ -56,7 +55,6 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<AccessTokenRecord, UserRecord> ACCESS_TOKEN_IBFK_1 = ForeignKeys0.ACCESS_TOKEN_IBFK_1;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -75,9 +73,5 @@ public class Keys {
         public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = Internal.createUniqueKey(User.USER, "KEY_user_PRIMARY", User.USER.ID);
         public static final UniqueKey<UserRecord> KEY_USER_USER_ID = Internal.createUniqueKey(User.USER, "KEY_user_user_id", User.USER.USER_ID);
         public static final UniqueKey<UserRecord> KEY_USER_USERNAME = Internal.createUniqueKey(User.USER, "KEY_user_username", User.USER.USERNAME);
-    }
-
-    private static class ForeignKeys0 {
-        public static final ForeignKey<AccessTokenRecord, UserRecord> ACCESS_TOKEN_IBFK_1 = Internal.createForeignKey(ilio.auth.core.model.generated.Keys.KEY_USER_USER_ID, AccessToken.ACCESS_TOKEN, "access_token_ibfk_1", AccessToken.ACCESS_TOKEN.ID);
     }
 }

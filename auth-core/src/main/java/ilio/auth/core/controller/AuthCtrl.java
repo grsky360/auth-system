@@ -49,6 +49,6 @@ public class AuthCtrl {
         if (StringUtil.isEmpty(authorization) || !authorization.startsWith("Bearer ")) {
             return null;
         }
-        return authorization.substring("Bearer".length());
+        return authorization.substring("Bearer ".length());
     }
 }

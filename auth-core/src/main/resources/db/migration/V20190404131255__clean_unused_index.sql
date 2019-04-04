@@ -1,0 +1,1 @@
+drop index token_2 on access_token;

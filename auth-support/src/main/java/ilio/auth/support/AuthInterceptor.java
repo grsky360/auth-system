@@ -56,6 +56,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         if (StringUtil.isEmpty(authorization) || !authorization.startsWith("Bearer ")) {
             return null;
         }
-        return authorization.substring("Bearer".length());
+        return authorization.substring("Bearer ".length());
     }
 }

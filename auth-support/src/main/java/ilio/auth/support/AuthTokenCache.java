@@ -8,6 +8,7 @@ import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import jodd.madvoc.result.JsonResult;
 import jodd.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
@@ -15,32 +16,34 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Component
 @Conditional(EnableAuthCondition.class)
 class AuthTokenCache {
 
     @Value("${auth.url: http://localhost:9001}")
     private String authUrl;
-    private LoadingCache<String, Optional<User>> cache;
-
-    {
-        this.cache = CacheBuilder.newBuilder()
+    private LoadingCache<String, Optional<User>> authTokenCache = CacheBuilder.newBuilder()
                 .maximumSize(10000)
-                .expireAfterWrite(1, TimeUnit.MINUTES)
+                .expireAfterWrite(30, TimeUnit.MINUTES)
                 .build(new CacheLoader<String, Optional<User>>() {
                     @Override
                     public Optional<User> load(String key) throws Exception {
                         return auth(key);
                     }
                 });
-    }
 
     public User getUser(String token) {
         try {
-            return cache.get(token).orElse(null);
+            Optional<User> cache = authTokenCache.get(token);
+            if (cache.isPresent()) {
+                return cache.get();
+            }
+            authTokenCache.invalidate(token);
         } catch (Exception e) {
-            throw new RuntimeException("auth failed");
+            log.error("auth failed", e);
         }
+        return null;
     }
 
     private Optional<User> auth(String token) {

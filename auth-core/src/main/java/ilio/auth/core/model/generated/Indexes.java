@@ -34,7 +34,6 @@ public class Indexes {
 
     public static final Index ACCESS_TOKEN_PRIMARY = Indexes0.ACCESS_TOKEN_PRIMARY;
     public static final Index ACCESS_TOKEN_TOKEN = Indexes0.ACCESS_TOKEN_TOKEN;
-    public static final Index ACCESS_TOKEN_TOKEN_2 = Indexes0.ACCESS_TOKEN_TOKEN_2;
     public static final Index ACCESS_TOKEN_USER_ID = Indexes0.ACCESS_TOKEN_USER_ID;
     public static final Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX;
     public static final Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY;
@@ -49,7 +48,6 @@ public class Indexes {
     private static class Indexes0 {
         public static Index ACCESS_TOKEN_PRIMARY = Internal.createIndex("PRIMARY", AccessToken.ACCESS_TOKEN, new OrderField[] { AccessToken.ACCESS_TOKEN.ID }, true);
         public static Index ACCESS_TOKEN_TOKEN = Internal.createIndex("token", AccessToken.ACCESS_TOKEN, new OrderField[] { AccessToken.ACCESS_TOKEN.TOKEN }, true);
-        public static Index ACCESS_TOKEN_TOKEN_2 = Internal.createIndex("token_2", AccessToken.ACCESS_TOKEN, new OrderField[] { AccessToken.ACCESS_TOKEN.TOKEN }, false);
         public static Index ACCESS_TOKEN_USER_ID = Internal.createIndex("user_id", AccessToken.ACCESS_TOKEN, new OrderField[] { AccessToken.ACCESS_TOKEN.USER_ID }, true);
         public static Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
         public static Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
