@@ -4,7 +4,6 @@
 package ilio.auth.core.model.generated;
 
 
-import ilio.auth.core.model.generated.tables.AccessToken;
 import ilio.auth.core.model.generated.tables.FlywaySchemaHistory;
 import ilio.auth.core.model.generated.tables.User;
 
@@ -23,11 +22,6 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
-
-    /**
-     * The table <code>auth_sys.access_token</code>.
-     */
-    public static final AccessToken ACCESS_TOKEN = ilio.auth.core.model.generated.tables.AccessToken.ACCESS_TOKEN;
 
     /**
      * The table <code>auth_sys.flyway_schema_history</code>.

@@ -4,10 +4,8 @@
 package ilio.auth.core.model.generated;
 
 
-import ilio.auth.core.model.generated.tables.AccessToken;
 import ilio.auth.core.model.generated.tables.FlywaySchemaHistory;
 import ilio.auth.core.model.generated.tables.User;
-import ilio.auth.core.model.generated.tables.records.AccessTokenRecord;
 import ilio.auth.core.model.generated.tables.records.FlywaySchemaHistoryRecord;
 import ilio.auth.core.model.generated.tables.records.UserRecord;
 
@@ -36,16 +34,12 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
-    public static final Identity<AccessTokenRecord, Long> IDENTITY_ACCESS_TOKEN = Identities0.IDENTITY_ACCESS_TOKEN;
     public static final Identity<UserRecord, Long> IDENTITY_USER = Identities0.IDENTITY_USER;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<AccessTokenRecord> KEY_ACCESS_TOKEN_PRIMARY = UniqueKeys0.KEY_ACCESS_TOKEN_PRIMARY;
-    public static final UniqueKey<AccessTokenRecord> KEY_ACCESS_TOKEN_USER_ID = UniqueKeys0.KEY_ACCESS_TOKEN_USER_ID;
-    public static final UniqueKey<AccessTokenRecord> KEY_ACCESS_TOKEN_TOKEN = UniqueKeys0.KEY_ACCESS_TOKEN_TOKEN;
     public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY;
     public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
     public static final UniqueKey<UserRecord> KEY_USER_USER_ID = UniqueKeys0.KEY_USER_USER_ID;
@@ -61,14 +55,10 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class Identities0 {
-        public static Identity<AccessTokenRecord, Long> IDENTITY_ACCESS_TOKEN = Internal.createIdentity(AccessToken.ACCESS_TOKEN, AccessToken.ACCESS_TOKEN.ID);
         public static Identity<UserRecord, Long> IDENTITY_USER = Internal.createIdentity(User.USER, User.USER.ID);
     }
 
     private static class UniqueKeys0 {
-        public static final UniqueKey<AccessTokenRecord> KEY_ACCESS_TOKEN_PRIMARY = Internal.createUniqueKey(AccessToken.ACCESS_TOKEN, "KEY_access_token_PRIMARY", AccessToken.ACCESS_TOKEN.ID);
-        public static final UniqueKey<AccessTokenRecord> KEY_ACCESS_TOKEN_USER_ID = Internal.createUniqueKey(AccessToken.ACCESS_TOKEN, "KEY_access_token_user_id", AccessToken.ACCESS_TOKEN.USER_ID);
-        public static final UniqueKey<AccessTokenRecord> KEY_ACCESS_TOKEN_TOKEN = Internal.createUniqueKey(AccessToken.ACCESS_TOKEN, "KEY_access_token_token", AccessToken.ACCESS_TOKEN.TOKEN);
         public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK);
         public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = Internal.createUniqueKey(User.USER, "KEY_user_PRIMARY", User.USER.ID);
         public static final UniqueKey<UserRecord> KEY_USER_USER_ID = Internal.createUniqueKey(User.USER, "KEY_user_user_id", User.USER.USER_ID);

@@ -97,6 +97,12 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.55</version>
         </dependency>
+
+        <dependency>
+            <groupId>ilio</groupId>
+            <artifactId>auth-support</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

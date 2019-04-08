@@ -1,13 +1,12 @@
 package ilio.auth.core.service.impl;
 
 import ilio.auth.core.exceptions.CommonException;
-import ilio.auth.core.model.dao.AccessTokenDao;
 import ilio.auth.core.model.dao.UserDao;
-import ilio.auth.core.model.generated.tables.records.AccessTokenRecord;
 import ilio.auth.core.model.generated.tables.records.UserRecord;
 import ilio.auth.core.service.AuthService;
-import lombok.var;
+import ilio.auth.core.service.data.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -22,71 +21,71 @@ public class AuthServiceImpl implements AuthService {
     private UserDao userDao;
 
     @Autowired
-    private AccessTokenDao accessTokenDao;
+    private RedisTemplate<String, ?> redisTemplate;
 
     @Override
-    public AccessTokenRecord login(String username, String password) {
-        var encryptedPassword = DigestUtils.md5DigestAsHex(password.getBytes());
-        var userRecord = userDao.getByUserNameAndPassword(username, encryptedPassword);
+    public AccessToken login(String username, String password) {
+        String  encryptedPassword = DigestUtils.md5DigestAsHex(password.getBytes());
+        UserRecord userRecord = userDao.getByUserNameAndPassword(username, encryptedPassword);
         if (userRecord == null) {
             throw new CommonException("wrong username or password");
         }
-        var record = accessTokenDao.getByUserId(userRecord.getUserId());
-        if (record != null) {
-            if (isValid(record.getToken())) {
-                renewToken(record.getToken());
-                return record;
+        AccessToken accessToken = redisTemplate.<Long, AccessToken>opsForHash().get("dev/user_token", userRecord.getUserId());
+        if (accessToken != null) {
+            if (isValid(accessToken)) {
+                renewToken(accessToken);
+                return accessToken;
             }
         }
-        record = new AccessTokenRecord();
-        record.setUserId(userRecord.getUserId());
-        record.setToken(generateTokenStr());
-        record.setExpiresAt(LocalDateTime.now().plusHours(2));
-        record.insert();
-        return record;
+        accessToken = generateToken(userRecord.getUserId());
+        redisTemplate.opsForHash().put("dev/user_token", userRecord.getUserId(), accessToken);
+        redisTemplate.opsForHash().put("dev/token", accessToken.getToken(), accessToken);
+        return accessToken;
     }
 
     @Override
-    public UserRecord getUserInfo(String accessToken) {
-        if (!isValid(accessToken)) {
+    public UserRecord getUserInfo(String token) {
+        AccessToken accessToken = redisTemplate.<Long, AccessToken>opsForHash().get("dev/token", token);
+        if (accessToken == null || !isValid(accessToken)) {
             return null;
         }
-        var record = accessTokenDao.getByToken(accessToken);
-        return userDao.getByUserId(record.getUserId());
+        renewToken(accessToken);
+        return userDao.getByUserId(accessToken.getUserId());
     }
 
-    @Override
-    public boolean isValid(String accessToken) {
-        var record = accessTokenDao.getByToken(accessToken);
-        if (record != null) {
-            if (record.getExpiresAt().isBefore(LocalDateTime.now())) {
-                record.delete();
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean renewToken(String accessToken) {
-        if (!isValid(accessToken)) {
+    private boolean isValid(AccessToken accessToken) {
+        if (accessToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+            redisTemplate.opsForHash().delete("dev/token", accessToken.getUserId());
             return false;
         }
-        var record = accessTokenDao.getByToken(accessToken);
-        record.setExpiresAt(LocalDateTime.now().plusHours(2));
-        record.update();
         return true;
     }
 
+    private void renewToken(AccessToken accessToken) {
+        if (!isValid(accessToken)) {
+            return;
+        }
+        accessToken.setExpiresAt(LocalDateTime.now().plusHours(2));
+        redisTemplate.opsForHash().put("dev/user_token", accessToken.getUserId(), accessToken);
+        redisTemplate.opsForHash().put("dev/token", accessToken.getToken(), accessToken);
+    }
+
+    private AccessToken generateToken(Long userId) {
+        AccessToken accessToken = new AccessToken();
+        accessToken.setUserId(userId);
+        accessToken.setToken(generateTokenStr());
+        accessToken.setExpiresAt(LocalDateTime.now().plusHours(2));
+        return accessToken;
+    }
+
     private String generateTokenStr() {
-        var accessToken = UUID.randomUUID().toString().replaceAll("-", "");
+        String accessToken = UUID.randomUUID().toString().replaceAll("-", "");
         accessToken += "$-+-#";
-        var chars = accessToken.toCharArray();
-        var random = new Random();
-        for (var i = 1; i < chars.length; i++) {
-            var j = random.nextInt(i);
-            var tmp = chars[i];
+        char[] chars = accessToken.toCharArray();
+        Random random = new Random();
+        for (int i = 1; i < chars.length; i++) {
+            int j = random.nextInt(i);
+            char tmp = chars[i];
             chars[i] = chars[j];
             chars[j] = tmp;
         }

@@ -1,13 +1,13 @@
 package ilio.auth.core.controller;
 
 import ilio.auth.core.controller.req.LoginParam;
-import ilio.auth.core.controller.resp.AccessTokenResp;
 import ilio.auth.core.controller.resp.JsonResult;
 import ilio.auth.core.controller.resp.UserResp;
 import ilio.auth.core.exceptions.UnauthorizedException;
+import ilio.auth.core.model.generated.tables.records.UserRecord;
 import ilio.auth.core.service.AuthService;
+import ilio.auth.core.service.data.AccessToken;
 import jodd.util.StringUtil;
-import lombok.var;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,23 +23,21 @@ public class AuthCtrl {
 
     @PostMapping("/login")
     public JsonResult login(@RequestBody LoginParam loginParam) {
-        var token = authService.login(loginParam.getUsername(), loginParam.getPassword());
-        var resp = new AccessTokenResp();
-        BeanUtils.copyProperties(token, resp);
-        return JsonResult.of(resp);
+        AccessToken token = authService.login(loginParam.getUsername(), loginParam.getPassword());
+        return JsonResult.of(token);
     }
 
     @GetMapping("/auth")
     public JsonResult auth(HttpServletRequest request) {
-        var token = getToken(request);
+        String token = getToken(request);
         if (token == null) {
             throw new UnauthorizedException();
         }
-        var user = authService.getUserInfo(token);
+        UserRecord user = authService.getUserInfo(token);
         if (user == null) {
             throw new UnauthorizedException();
         }
-        var resp = new UserResp();
+        UserResp resp = new UserResp();
         BeanUtils.copyProperties(user, resp);
         return JsonResult.of(resp);
     }

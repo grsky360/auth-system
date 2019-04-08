@@ -4,7 +4,6 @@
 package ilio.auth.core.model.generated;
 
 
-import ilio.auth.core.model.generated.tables.AccessToken;
 import ilio.auth.core.model.generated.tables.FlywaySchemaHistory;
 import ilio.auth.core.model.generated.tables.User;
 
@@ -32,17 +31,12 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AuthSys extends SchemaImpl {
 
-    private static final long serialVersionUID = -875670856;
+    private static final long serialVersionUID = -1014680543;
 
     /**
      * The reference instance of <code>auth_sys</code>
      */
     public static final AuthSys AUTH_SYS = new AuthSys();
-
-    /**
-     * The table <code>auth_sys.access_token</code>.
-     */
-    public final AccessToken ACCESS_TOKEN = ilio.auth.core.model.generated.tables.AccessToken.ACCESS_TOKEN;
 
     /**
      * The table <code>auth_sys.flyway_schema_history</code>.
@@ -79,7 +73,6 @@ public class AuthSys extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            AccessToken.ACCESS_TOKEN,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             User.USER);
     }
