@@ -7,5 +7,5 @@ Provide auth function
 Support other project to check in
   
 ### ToDo List
--[ ] mp
--[ ] weapp
+- [ ] mp
+- [ ] weapp

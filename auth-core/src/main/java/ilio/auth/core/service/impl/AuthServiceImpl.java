@@ -1,12 +1,12 @@
 package ilio.auth.core.service.impl;
 
 import ilio.auth.core.exceptions.CommonException;
-import ilio.auth.core.model.generated.Tables;
+import ilio.auth.core.model.dao.AccessTokenDao;
+import ilio.auth.core.model.dao.UserDao;
 import ilio.auth.core.model.generated.tables.records.AccessTokenRecord;
 import ilio.auth.core.model.generated.tables.records.UserRecord;
 import ilio.auth.core.service.AuthService;
 import lombok.var;
-import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -19,28 +19,26 @@ import java.util.UUID;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private DSLContext dsl;
+    private UserDao userDao;
+
+    @Autowired
+    private AccessTokenDao accessTokenDao;
 
     @Override
     public AccessTokenRecord login(String username, String password) {
         var encryptedPassword = DigestUtils.md5DigestAsHex(password.getBytes());
-        var userRecord = dsl.selectFrom(Tables.USER)
-                .where(Tables.USER.USERNAME.eq(username))
-                .and(Tables.USER.PASSWORD.eq(encryptedPassword))
-                .fetchOne();
+        var userRecord = userDao.getByUserNameAndPassword(username, encryptedPassword);
         if (userRecord == null) {
             throw new CommonException("wrong username or password");
         }
-        var record = dsl.selectFrom(Tables.ACCESS_TOKEN)
-                .where(Tables.ACCESS_TOKEN.USER_ID.eq(userRecord.getUserId()))
-                .fetchOne();
+        var record = accessTokenDao.getByUserId(userRecord.getUserId());
         if (record != null) {
             if (isValid(record.getToken())) {
                 renewToken(record.getToken());
                 return record;
             }
         }
-        record = dsl.newRecord(Tables.ACCESS_TOKEN);
+        record = new AccessTokenRecord();
         record.setUserId(userRecord.getUserId());
         record.setToken(generateTokenStr());
         record.setExpiresAt(LocalDateTime.now().plusHours(2));
@@ -53,19 +51,13 @@ public class AuthServiceImpl implements AuthService {
         if (!isValid(accessToken)) {
             return null;
         }
-        var record = dsl.selectFrom(Tables.ACCESS_TOKEN)
-                .where(Tables.ACCESS_TOKEN.TOKEN.eq(accessToken))
-                .fetchOne();
-        return dsl.selectFrom(Tables.USER)
-                .where(Tables.USER.USER_ID.eq(record.getUserId()))
-                .fetchOne();
+        var record = accessTokenDao.getByToken(accessToken);
+        return userDao.getByUserId(record.getUserId());
     }
 
     @Override
     public boolean isValid(String accessToken) {
-        var record = dsl.selectFrom(Tables.ACCESS_TOKEN)
-                .where(Tables.ACCESS_TOKEN.TOKEN.eq(accessToken))
-                .fetchOne();
+        var record = accessTokenDao.getByToken(accessToken);
         if (record != null) {
             if (record.getExpiresAt().isBefore(LocalDateTime.now())) {
                 record.delete();
@@ -81,9 +73,7 @@ public class AuthServiceImpl implements AuthService {
         if (!isValid(accessToken)) {
             return false;
         }
-        var record = dsl.selectFrom(Tables.ACCESS_TOKEN)
-                .where(Tables.ACCESS_TOKEN.TOKEN.eq(accessToken))
-                .fetchOne();
+        var record = accessTokenDao.getByToken(accessToken);
         record.setExpiresAt(LocalDateTime.now().plusHours(2));
         record.update();
         return true;
