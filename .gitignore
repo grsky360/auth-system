@@ -28,3 +28,8 @@
 .vscode/
 
 */target/
+
+**/logs/*
+!**/logs/\.gitkeep
+
+RUNNING_PID
