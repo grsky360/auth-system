@@ -70,10 +70,6 @@ public class RedisUtil {
         return this.<K, V>mapCache(key).get(valueKey);
     }
 
-    public <K, V> V putMapCache(String key, K valueKey, V valueValue) {
-        return this.<K, V>mapCache(key).put(valueKey, valueValue);
-    }
-
     public <K, V> V putMapCache(String key, K valueKey, V valueValue, long second) {
         return this.<K, V>mapCache(key).put(valueKey, valueValue, second, TimeUnit.SECONDS);
     }

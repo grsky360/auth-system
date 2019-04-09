@@ -39,8 +39,8 @@ public class AuthServiceImpl implements AuthService {
             }
         }
         accessToken = generateToken(userRecord.getUserId());
-        redisUtil.putMapCache("user_token", userRecord.getUserId(), accessToken);
-        redisUtil.putMapCache("token", accessToken.getToken(), accessToken);
+        redisUtil.putMapCache("user_token", userRecord.getUserId(), accessToken, 2 * 3600);
+        redisUtil.putMapCache("token", accessToken.getToken(), accessToken, 2 * 3600);
         return accessToken;
     }
 
@@ -67,8 +67,8 @@ public class AuthServiceImpl implements AuthService {
             return;
         }
         accessToken.setExpiresAt(LocalDateTime.now().plusHours(2));
-        redisUtil.putMapCache("user_token", accessToken.getUserId(), accessToken);
-        redisUtil. putMapCache("token", accessToken.getToken(), accessToken);
+        redisUtil.putMapCache("user_token", accessToken.getUserId(), accessToken, 2 * 3600);
+        redisUtil. putMapCache("token", accessToken.getToken(), accessToken, 2 * 3600);
     }
 
     private AccessToken generateToken(Long userId) {
