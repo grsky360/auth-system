@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
         if (userRecord == null) {
             throw new CommonException("wrong username or password");
         }
-        AccessToken accessToken = getMapCache("user_token", userRecord.getUserId());
+        AccessToken accessToken = redisUtil.getMapCache("user_token", userRecord.getUserId());
         if (accessToken != null) {
             if (isValid(accessToken)) {
                 renewToken(accessToken);
@@ -39,14 +39,14 @@ public class AuthServiceImpl implements AuthService {
             }
         }
         accessToken = generateToken(userRecord.getUserId());
-        putMapCache("user_token", userRecord.getUserId(), accessToken);
-        putMapCache("token", accessToken.getToken(), accessToken);
+        redisUtil.putMapCache("user_token", userRecord.getUserId(), accessToken);
+        redisUtil.putMapCache("token", accessToken.getToken(), accessToken);
         return accessToken;
     }
 
     @Override
     public UserRecord getUserInfo(String token) {
-        AccessToken accessToken = getMapCache("token", token);
+        AccessToken accessToken = redisUtil.getMapCache("token", token);
         if (accessToken == null || !isValid(accessToken)) {
             return null;
         }
@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
 
     private boolean isValid(AccessToken accessToken) {
         if (accessToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            getMapCache("token").remove(accessToken.getUserId());
+            redisUtil.removeMapCache("token", accessToken.getUserId());
             return false;
         }
         return true;
@@ -67,8 +67,8 @@ public class AuthServiceImpl implements AuthService {
             return;
         }
         accessToken.setExpiresAt(LocalDateTime.now().plusHours(2));
-        putMapCache("user_token", accessToken.getUserId(), accessToken);
-        putMapCache("token", accessToken.getToken(), accessToken);
+        redisUtil.putMapCache("user_token", accessToken.getUserId(), accessToken);
+        redisUtil. putMapCache("token", accessToken.getToken(), accessToken);
     }
 
     private AccessToken generateToken(Long userId) {
@@ -91,17 +91,5 @@ public class AuthServiceImpl implements AuthService {
             chars[j] = tmp;
         }
         return new String(chars);
-    }
-
-    private <K, V> RMapCache<K, V> getMapCache(String key) {
-        return redisUtil.mapCache(key);
-    }
-
-    private <K, V> V getMapCache(String key, K valueKey) {
-        return this.<K, V>getMapCache(key).get(valueKey);
-    }
-
-    private <K, V> void putMapCache(String key, K valueKey, V valueValue) {
-        this.<K, V>getMapCache(key).put(valueKey, valueValue);
     }
 }

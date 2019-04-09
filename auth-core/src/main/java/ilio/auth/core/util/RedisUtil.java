@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -49,7 +50,35 @@ public class RedisUtil {
         return client.getMap(key);
     }
 
-    public <V, K> RMapCache<K,V> mapCache(String key) {
+    public <K, V> V getMap(String key, K valueKey) {
+        return this.<K, V>map(key).get(valueKey);
+    }
+
+    public <K, V> V putMap(String key, K valueKey, V valueValue) {
+        return this.<K, V>map(key).put(valueKey, valueValue);
+    }
+
+    public <K, V> V removeMap(String key, K valueKey) {
+        return this.<K, V> map(key).remove(valueKey);
+    }
+
+    public <K, V> RMapCache<K, V> mapCache(String key) {
         return client.getMapCache(key);
+    }
+
+    public <K, V> V getMapCache(String key, K valueKey) {
+        return this.<K, V>mapCache(key).get(valueKey);
+    }
+
+    public <K, V> V putMapCache(String key, K valueKey, V valueValue) {
+        return this.<K, V>mapCache(key).put(valueKey, valueValue);
+    }
+
+    public <K, V> V putMapCache(String key, K valueKey, V valueValue, long second) {
+        return this.<K, V>mapCache(key).put(valueKey, valueValue, second, TimeUnit.SECONDS);
+    }
+
+    public <K, V> V removeMapCache(String key, K valueKey) {
+        return this.<K, V> mapCache(key).remove(valueKey);
     }
 }
