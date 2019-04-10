@@ -56,7 +56,8 @@ public class AuthServiceImpl implements AuthService {
 
     private boolean isValid(AccessToken accessToken) {
         if (accessToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            redisUtil.removeMapCache("token", accessToken.getUserId());
+            redisUtil.removeMapCache("user_token", accessToken.getUserId());
+            redisUtil.removeMapCache("token", accessToken.getToken());
             return false;
         }
         return true;

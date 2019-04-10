@@ -10,28 +10,27 @@ import jodd.madvoc.result.JsonResult;
 import jodd.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Component
-@Conditional(EnableAuthCondition.class)
 class AuthTokenCache {
 
-    @Value("${auth.url: http://localhost:9001}")
     private String authUrl;
     private LoadingCache<String, Optional<User>> authTokenCache = CacheBuilder.newBuilder()
                 .maximumSize(10000)
-                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .expireAfterWrite(1, TimeUnit.MINUTES)
                 .build(new CacheLoader<String, Optional<User>>() {
                     @Override
                     public Optional<User> load(String key) throws Exception {
                         return auth(key);
                     }
                 });
+
+    AuthTokenCache(String authUrl) {
+        this.authUrl = authUrl;
+    }
 
     public User getUser(String token) {
         try {

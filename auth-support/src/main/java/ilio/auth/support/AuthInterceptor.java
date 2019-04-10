@@ -1,9 +1,6 @@
 package ilio.auth.support;
 
 import jodd.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -11,14 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 
-@Component
-@Conditional(EnableAuthCondition.class)
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
-    @Autowired
-    private AuthTokenCache authTokenCache;
+    private final AuthTokenCache authTokenCache;
 
     static final String ATTRIBUTE_USER = "__user__";
+
+    AuthInterceptor(String authUrl) {
+        this.authTokenCache = new AuthTokenCache(authUrl);
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

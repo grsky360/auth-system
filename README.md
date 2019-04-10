@@ -5,6 +5,3 @@
 Provide auth function
 #### Auth Support
 Support other project to check in
-
-#### Banner
-ogre

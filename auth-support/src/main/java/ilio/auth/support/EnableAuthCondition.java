@@ -1,11 +1,9 @@
 package ilio.auth.support;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.Assert;
 
 import java.util.Map;
 
