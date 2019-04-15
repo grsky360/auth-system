@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <title></title>
+</head>
+<body>
+<button onclick="handleWeiboLogin()">weibo</button><br />
+<span id="loginBtn"></span>
+<script type="text/javascript" charset="utf-8"
+        src="http://connect.qq.com/qc_jssdk.js"
+        th:attr="data-appid=${qq.appId},data-redirecturi=${qq.redirectUri}"
+></script>
+<script th:inline="javascript">
+QC.Login({
+    btnId: 'loginBtn'
+})
+function handleWeiboLogin() {
+    location.href = 'https://api.weibo.com/oauth2/authorize?client_id=' + [[${weibo.appId}]] + '&response_type=code&redirect_uri=' + [[${weibo.callbackUri}]]
+}
+</script>
+</body>
+</html>

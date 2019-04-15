@@ -3,7 +3,6 @@ package ilio.auth.core;
 import com.alibaba.fastjson.JSON;
 import ilio.auth.core.model.generated.tables.records.UserRecord;
 import ilio.auth.core.service.AuthService;
-import ilio.auth.support.AuthConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

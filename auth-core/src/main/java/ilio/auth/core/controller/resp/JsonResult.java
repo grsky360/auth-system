@@ -17,7 +17,11 @@ public class JsonResult<T> {
     private int status = 200;
     private String message = "ok";
 
-    public static <T> JsonResult of(T object) {
+    public static <T> JsonResult<T> ok() {
+        return new JsonResult<>(null);
+    }
+
+    public static <T> JsonResult<T> of(T object) {
         return new JsonResult<>(object);
     }
 

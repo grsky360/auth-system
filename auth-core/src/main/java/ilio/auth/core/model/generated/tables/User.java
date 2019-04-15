@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = 419477184;
+    private static final long serialVersionUID = 80078673;
 
     /**
      * The reference instance of <code>auth_sys.user</code>
@@ -68,24 +68,14 @@ public class User extends TableImpl<UserRecord> {
     public final TableField<UserRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>auth_sys.user.username</code>.
+     * The column <code>auth_sys.user.platform</code>.
      */
-    public final TableField<UserRecord, String> USERNAME = createField("username", org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<UserRecord, String> PLATFORM = createField("platform", org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>auth_sys.user.password</code>.
+     * The column <code>auth_sys.user.platform_id</code>.
      */
-    public final TableField<UserRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>auth_sys.user.email</code>.
-     */
-    public final TableField<UserRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>auth_sys.user.phone</code>.
-     */
-    public final TableField<UserRecord, String> PHONE = createField("phone", org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<UserRecord, Long> PLATFORM_ID = createField("platform_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>auth_sys.user.created_time</code>.
@@ -143,7 +133,7 @@ public class User extends TableImpl<UserRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.USER_PRIMARY, Indexes.USER_USER_ID, Indexes.USER_USERNAME);
+        return Arrays.<Index>asList(Indexes.USER_PRIMARY, Indexes.USER_USER_ID);
     }
 
     /**
@@ -167,7 +157,7 @@ public class User extends TableImpl<UserRecord> {
      */
     @Override
     public List<UniqueKey<UserRecord>> getKeys() {
-        return Arrays.<UniqueKey<UserRecord>>asList(Keys.KEY_USER_PRIMARY, Keys.KEY_USER_USER_ID, Keys.KEY_USER_USERNAME);
+        return Arrays.<UniqueKey<UserRecord>>asList(Keys.KEY_USER_PRIMARY, Keys.KEY_USER_USER_ID);
     }
 
     /**

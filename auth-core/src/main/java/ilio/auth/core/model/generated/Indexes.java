@@ -35,7 +35,6 @@ public class Indexes {
     public static final Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY;
     public static final Index USER_PRIMARY = Indexes0.USER_PRIMARY;
     public static final Index USER_USER_ID = Indexes0.USER_USER_ID;
-    public static final Index USER_USERNAME = Indexes0.USER_USERNAME;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -46,6 +45,5 @@ public class Indexes {
         public static Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
         public static Index USER_PRIMARY = Internal.createIndex("PRIMARY", User.USER, new OrderField[] { User.USER.ID }, true);
         public static Index USER_USER_ID = Internal.createIndex("user_id", User.USER, new OrderField[] { User.USER.USER_ID }, true);
-        public static Index USER_USERNAME = Internal.createIndex("username", User.USER, new OrderField[] { User.USER.USERNAME }, true);
     }
 }
