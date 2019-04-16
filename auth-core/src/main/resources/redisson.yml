@@ -22,5 +22,5 @@ singleServerConfig:
 threads: 0
 nettyThreads: 0
 codec:
-  class: "ilio.auth.core.util.FastJsonCodec"
+  class: "ilio.oauth.core.util.FastJsonCodec"
 transportMode: "NIO"

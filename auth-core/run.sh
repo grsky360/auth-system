@@ -15,7 +15,7 @@ if [ $PARAM_COUNT -lt 1 ] || [ $PARAM_COUNT -gt 2 ]; then
     exit 1
 fi
 
-APP=auth-core
+APP=oauth-core
 VERSION=1.0.0
 COMMAND="$1"
 ENV="$2"

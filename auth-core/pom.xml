@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ilio</groupId>
-    <artifactId>auth-core</artifactId>
+    <artifactId>oauth-core</artifactId>
     <version>1.0.0</version>
-    <name>auth-core</name>
+    <name>oauth-core</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
